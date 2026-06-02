@@ -6,7 +6,8 @@ export async function GET() {
     const listings = await getListings();
     return NextResponse.json(listings);
   } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
     console.error(err);
-    return NextResponse.json({ error: "Failed to load listings" }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
