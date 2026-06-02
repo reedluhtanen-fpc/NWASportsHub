@@ -36,6 +36,10 @@ function getAuth() {
   const credentialsJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
   if (!credentialsJson) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON not set");
   const credentials = JSON.parse(credentialsJson);
+  // Fix private key newlines that get mangled by some deployment platforms
+  if (credentials.private_key) {
+    credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
+  }
   return new google.auth.GoogleAuth({
     credentials,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
