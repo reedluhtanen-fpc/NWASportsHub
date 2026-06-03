@@ -129,6 +129,12 @@ function BrowseContent() {
     )
       return false;
     return true;
+  }).sort((a, b) => {
+    const aHasTryout = !!(a.tryoutDate || a.tryoutDate2 || a.tryoutDate3);
+    const bHasTryout = !!(b.tryoutDate || b.tryoutDate2 || b.tryoutDate3);
+    if (aHasTryout && !bHasTryout) return -1;
+    if (!aHasTryout && bHasTryout) return 1;
+    return 0;
   });
 
   return (
