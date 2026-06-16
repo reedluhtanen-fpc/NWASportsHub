@@ -94,6 +94,34 @@ export async function getListings(): Promise<Listing[]> {
     }));
 }
 
+export interface AgeCutoff {
+  authority: string;
+  cutoffDate: string; // YYYY-MM-DD
+  notes: string;
+}
+
+export async function getAgeCutoffs(): Promise<AgeCutoff[]> {
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+  if (!spreadsheetId) throw new Error("GOOGLE_SHEET_ID not set");
+
+  const auth = getAuth();
+  const sheets = google.sheets({ version: "v4", auth });
+
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: "AgeCutoffs!A2:C",
+  });
+
+  const rows = res.data.values || [];
+  return rows
+    .filter((row) => row[0] && row[1])
+    .map((row) => ({
+      authority: row[0] || "",
+      cutoffDate: row[1] || "",
+      notes: row[2] || "",
+    }));
+}
+
 export async function appendSubmission(data: Omit<Listing, "id" | "status">) {
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
   if (!spreadsheetId) throw new Error("GOOGLE_SHEET_ID not set");

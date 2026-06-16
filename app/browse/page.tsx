@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AGE_GROUPS_BY_SPORT, CATEGORIES } from "@/lib/constants";
 import type { Listing } from "@/lib/sheets";
+import AgeCalculator from "@/components/AgeCalculator";
 
 function CityMultiSelect({
   cities,
@@ -142,6 +143,10 @@ function BrowseContent() {
       <div className="flex items-center gap-3 mb-6">
         <span className="text-2xl">⚾</span>
         <h1 className="text-2xl font-black text-[#1a4d2e]">Baseball Teams &amp; Leagues</h1>
+      </div>
+
+      <div className="mb-6">
+        <AgeCalculator />
       </div>
 
       {/* Filters */}
